@@ -8,7 +8,7 @@
 # install packages
 
 echo -ne "\n[+] Installing required packages\n"
-sudo pacman -S --noconfirm git lsd bat kitty lightdm lightdm-slick-greeter bspwm wmname sxhkd polybar zsh feh picom rofi nano unzip zsh noto-fonts-emoji zsh-syntax-highlighting zsh-autosuggestions wget firefox flameshot neovim gdb gcc openvpn xclip
+sudo pacman -S --noconfirm git lsd bat kitty lightdm lightdm-slick-greeter bspwm wmname sxhkd polybar zsh feh picom rofi nano unzip zsh noto-fonts-emoji zsh-syntax-highlighting zsh-autosuggestions wget firefox flameshot neovim gdb gcc openvpn xclip open-vm-tools
 
 # create directories
 echo -ne "\n[+] Setting up directories\n"
@@ -58,5 +58,13 @@ git clone https://github.com/NvChad/starter ~/.config/nvim && nvim --headless +q
 rm -rf ~/.config/nvim/.git
 
 echo -ne "\n[✔] NvChad installed on nvim" 
+
+echo -ne "\n[+] Enabling LightDM"
+
+sudo systemctl enable lightdm.service
+sudo systemctl enable vmware-vblock-fuse.service
+sudo pacman -S --noconfirm gtkmm3
+
+echo -ne "\n[✔] Lightdm enabled"
 
 sh postinstall.sh
