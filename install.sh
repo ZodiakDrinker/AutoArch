@@ -17,8 +17,8 @@ cp -r configurations/* $HOME/.config/
 
 find $HOME/.config/polybar/ -type f -exec chmod +x {} \; 
 
-mkdir $HOME/.local/share/fonts
-cp -r fonts/* $HOME/.local/share/fonts
+mkdir ~/.local/share/fonts
+cp -r fonts/* ~/.local/share/fonts
 fc-cache -fv
 
 sudo chmod +x ~/.config/sxhkd/sxhkdrc
