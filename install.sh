@@ -8,7 +8,7 @@
 # install packages
 
 echo -ne "\n[+] Installing required packages\n"
-sudo pacman -S --noconfirm git lsd bat kitty lightdm lightdm-slick-greeter bspwm wmname sxhkd polybar zsh feh picom rofi nano unzip zsh noto-fonts-emoji zsh-syntax-highlighting zsh-autosuggestions wget firefox flameshot neovim gdb gcc openvpn xclip open-vm-tools
+sudo pacman -S --noconfirm git lsd bat kitty lightdm lightdm-slick-greeter bspwm wmname sxhkd polybar zsh feh picom rofi nano unzip zsh noto-fonts-emoji zsh-syntax-highlighting zsh-autosuggestions wget firefox flameshot neovim gdb gcc openvpn xclip open-vm-tools openssh
 
 # create directories
 echo -ne "\n[+] Setting up directories\n"
@@ -41,7 +41,7 @@ Type=Application
 DesktopNames=bspwm
 EOF
 
-sudo sed -i '/\[Seat:\*\]/a greeter-session=lightdm-slick-greeter' /etc/lightdm/lightdm.conf
+sudo sed -i '/\[Seat:\*\]/a greeter-session=lightdm-slick-greeter\nuser-session=bspwm' /etc/lightdm/lightdm.conf
 
 cat <<EOF | sudo tee /etc/lightdm/slick-greeter.conf > /dev/null
 [Greeter]
