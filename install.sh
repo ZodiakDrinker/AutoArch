@@ -62,6 +62,7 @@ echo -ne "\n[✔] NvChad installed on nvim"
 echo -ne "\n[+] Enabling LightDM"
 
 sudo systemctl enable lightdm.service
+sudo systemctl enable vmtoolsd.service
 sudo systemctl enable vmware-vblock-fuse.service
 sudo pacman -S --noconfirm gtkmm3
 
