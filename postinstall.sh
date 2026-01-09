@@ -24,7 +24,7 @@ if [[ "$choice" == "Y" || "$choice" == "y" ]]; then
   sudo sh strap.sh
   echo -ne "\n[✔] BlackArch Repositories installed"
   echo -ne "\n[+] Installing hacking tools"
-  sudo pacman -S --noconfirm jdk-openjdk burpsuite openbsd-netcat hashid hashcat seclists plocate wfuzz gobuster netexec smbclient smbmap certipy nmap ghidra
+  sudo pacman -S --noconfirm jdk-openjdk burpsuite openbsd-netcat hashid hashcat seclists plocate wfuzz gobuster netexec smbclient smbmap certipy nmap ghidra sshpass openvpn
   echo -ne "\n[✔] Hacking Tools installed"
 elif [[ "$choice" == "N" || "$choice" == "n" ]]; then
   echo -ne "\n[✖]The Respositories has not been installed"
