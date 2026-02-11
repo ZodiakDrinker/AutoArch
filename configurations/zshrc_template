@@ -56,3 +56,7 @@ function settarget(){
 function cleartarget(){
     echo '' > ~/.config/polybar/hack/scripts/target
 }
+
+function mkt (){
+  mkdir {content,nmap,exploits,walkthrough}
+}
