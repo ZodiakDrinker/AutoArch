@@ -58,7 +58,7 @@ function cleartarget(){
 }
 
 function mkt (){
-  mkdir {content,nmap,exploits,obsidian,walkthrough}
+  mkdir {content,exploits,obsidian,walkthrough}
 }
 
 function extractPorts(){
