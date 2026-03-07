@@ -10,7 +10,7 @@ sudo pacman -Syu --noconfirm
 # install packages
 
 echo -ne "\n[+] Installing required packages\n"
-sudo pacman -S --noconfirm git lsd bat kitty lightdm lightdm-slick-greeter bspwm wmname sxhkd polybar zsh feh picom rofi nano unzip zsh noto-fonts-emoji zsh-syntax-highlighting zsh-autosuggestions wget firefox flameshot neovim gdb gcc xclip open-vm-tools openssh base-devel obsidian
+sudo pacman -S --noconfirm git lsd bat kitty lightdm lightdm-slick-greeter bspwm wmname sxhkd polybar zsh feh picom rofi nano unzip zsh noto-fonts-emoji zsh-syntax-highlighting zsh-autosuggestions wget firefox flameshot neovim gdb gcc xclip open-vm-tools openssh base-devel obsidian procl less
 
 # create directories
 echo -ne "\n[+] Setting up directories\n"
