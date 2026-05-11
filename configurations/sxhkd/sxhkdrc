@@ -130,3 +130,14 @@ super + shift + s
 super + Escape
   sh ~/.config/polybar/hack/scripts/powermenu.sh
 
+# Raise volume with 100% limit
+XF86AudioRaiseVolume
+    [ $(pactl get-sink-volume @DEFAULT_SINK@ | grep -Po '\d+(?=%)' | head -n 1) -lt 100 ] && pactl set-sink-volume @DEFAULT_SINK@ +5%
+
+# Lower volume (no limit needed here, it stops at 0% automatically)
+XF86AudioLowerVolume
+    pactl set-sink-volume @DEFAULT_SINK@ -5%
+
+# Mute/Unmute
+XF86AudioMute
+    pactl set-sink-mute @DEFAULT_SINK@ toggle
