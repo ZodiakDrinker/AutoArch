@@ -4,9 +4,9 @@
   "hostname": "arch-vm",
   "kernels": ["linux"],
   "locale_config": {
-    "kb_layout": "es",
+    "kb_layout": "us-acentos",
     "sys_enc": "UTF-8",
-    "sys_lang": "es_ES.UTF-8"
+    "sys_lang": "en_US.UTF-8"
   },
   "network_config": { "type": "nm" },
   "ntp": true,
@@ -69,6 +69,6 @@
   ],
   "custom_commands": [
     "git clone --depth 1 https://github.com/ZodiakDrinker/AutoArch /opt/AutoArch",
-    "chmod +x /opt/AutoArch/dotfiles.sh && /opt/AutoArch/dotfiles.sh mateo"
+    "chmod +x /opt/AutoArch/dotfiles.sh && /opt/AutoArch/dotfiles.sh zodiak"
   ]
 }
