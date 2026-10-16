@@ -1,7 +1,7 @@
 {
   "archinstall-language": "English",
   "bootloader": "Grub",
-  "hostname": "arch-vm",
+  "hostname": "HackArch",
   "kernels": ["linux"],
   "locale_config": {
     "kb_layout": "us-acentos",
