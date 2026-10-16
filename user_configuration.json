@@ -1,0 +1,74 @@
+{
+  "archinstall-language": "English",
+  "bootloader": "Grub",
+  "hostname": "arch-vm",
+  "kernels": ["linux"],
+  "locale_config": {
+    "kb_layout": "es",
+    "sys_enc": "UTF-8",
+    "sys_lang": "es_ES.UTF-8"
+  },
+  "network_config": { "type": "nm" },
+  "ntp": true,
+  "swap": true,
+  "timezone": "Europe/Madrid",
+  "parallel_downloads": 5,
+  "profile_config": {
+    "gfx_driver": "All open-source (default)",
+    "greeter": "lightdm-slick-greeter",
+    "profile": {
+      "main": "Window Manager",
+      "details": ["Bspwm"]
+    }
+  },
+  "packages": [
+    "git",
+    "base-devel",
+    "lsd",
+    "bat",
+    "kitty",
+    "lightdm",
+    "lightdm-slick-greeter",
+    "bspwm",
+    "sxhkd",
+    "wmname",
+    "polybar",
+    "zsh",
+    "zsh-syntax-highlighting",
+    "zsh-autosuggestions",
+    "starship",
+    "feh",
+    "picom",
+    "rofi",
+    "nano",
+    "neovim",
+    "unzip",
+    "wget",
+    "noto-fonts-emoji",
+    "firefox",
+    "flameshot",
+    "gdb",
+    "gcc",
+    "xclip",
+    "open-vm-tools",
+    "gtkmm3",
+    "openssh",
+    "obsidian",
+    "less",
+    "inetutils",
+    "traceroute",
+    "pulseaudio",
+    "pulseaudio-alsa",
+    "alsa-utils",
+    "pavucontrol"
+  ],
+  "services": [
+    "lightdm",
+    "vmtoolsd",
+    "vmware-vmblock-fuse"
+  ],
+  "custom_commands": [
+    "git clone --depth 1 https://github.com/ZodiakDrinker/AutoArch /opt/AutoArch",
+    "chmod +x /opt/AutoArch/dotfiles.sh && /opt/AutoArch/dotfiles.sh mateo"
+  ]
+}
