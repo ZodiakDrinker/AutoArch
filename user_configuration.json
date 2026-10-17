@@ -14,7 +14,7 @@
   "timezone": "Europe/Madrid",
   "parallel_downloads": 5,
   "profile_config": {
-    "gfx_driver": "All open-source (default)",
+    "gfx_driver": "All open-source",
     "greeter": "lightdm-slick-greeter",
     "profile": {
       "main": "Window Manager",
