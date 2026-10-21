@@ -11,7 +11,7 @@ desktop setup.
 - Display manager: **LightDM** with **slick-greeter**
 - Terminal and shell: **kitty**, **zsh** (autosuggestions + syntax highlighting) and **starship**
 - Editor: **Neovim** with **NvChad**
-- Extras: Firefox, Flameshot, Obsidian, open-vm-tools, and optional BlackArch tooling
+- Extras: Firefox, Flameshot, Obsidian, open-vm-tools, BlackArch tooling, and Metasploit with a ready-to-use PostgreSQL database
 
 ## Repository layout
 
@@ -81,7 +81,8 @@ its `custom_commands` clone this repository into `/opt/AutoArch` and run
 2. Configures LightDM (slick-greeter, bspwm session, wallpaper)
 3. Sets up zsh and starship for your user and root, and makes zsh their default shell
 4. Installs NvChad
-5. Optionally adds the BlackArch repositories and tools
+5. Adds the BlackArch repositories and tools (`--blackarch`)
+6. Installs Metasploit and sets up its PostgreSQL database (`--metasploit`)
 
 The user does not need to be named in the script: if no username is given,
 `dotfiles.sh` uses the first regular user (UID >= 1000) on the system.
@@ -93,12 +94,86 @@ If the post-install step fails or you installed Arch another way:
 ```bash
 git clone https://github.com/ZodiakDrinker/AutoArch
 cd AutoArch
-sudo ./dotfiles.sh [username] [--blackarch]
+sudo ./dotfiles.sh [username] [--blackarch] [--metasploit]
 ```
 
 It can be run more than once. An existing `~/.config/nvim` is never overwritten.
-This script does not install packages, so the ones listed in
-`user_configuration.json` must already be present.
+Apart from the optional `--blackarch` and `--metasploit` steps, this script does not
+install packages, so the ones listed in `user_configuration.json` must already be present.
+
+## Installed software
+
+Everything below is installed automatically, either by `archinstall` (the
+`packages` list in `user_configuration.json`) or by `dotfiles.sh`.
+
+### Base system
+
+- Linux kernel, GRUB bootloader, NetworkManager, sudo (from `archinstall`)
+- Xorg and the rest of the **Bspwm** profile packages that `archinstall` pulls in
+- `open-vm-tools` and `gtkmm3` (VMware guest integration)
+- `openssh`, `inetutils`, `traceroute`
+
+### Desktop
+
+- **bspwm**: tiling window manager
+- **sxhkd**: hotkey daemon
+- **polybar**: status bar
+- **picom**: compositor
+- **rofi**: application launcher
+- **feh**: wallpaper setter
+- **wmname**: window manager name helper
+- **LightDM** with **lightdm-slick-greeter**: login screen
+- Fonts: `noto-fonts-emoji` plus the fonts bundled in `fonts/`
+
+### Terminal and shell
+
+- **kitty**: terminal emulator
+- **zsh** with **zsh-autosuggestions** and **zsh-syntax-highlighting**
+- **starship**: shell prompt
+- **lsd**: modern `ls`
+- **bat**: modern `cat`
+- **neovim** with **NvChad**
+- **nano**, **less**
+
+### Applications
+
+- **Firefox**
+- **Flameshot**: screenshots
+- **Obsidian**: notes
+- **pavucontrol**: audio volume control
+
+### Audio
+
+- `pulseaudio`, `pulseaudio-alsa`, `alsa-utils`
+
+### Development tools
+
+- `git`, `base-devel`, `gcc`, `gdb`
+- `unzip`, `wget`, `xclip`
+
+### Security tools (`--blackarch`)
+
+Installed after the BlackArch repositories are added:
+
+- **Burp Suite**
+- **Ghidra** and `jdk-openjdk`
+- **Nmap**
+- **Hashcat** and **hashid**
+- **Gobuster** and **wfuzz**
+- **NetExec**, **smbclient**, **smbmap** and **Certipy**
+- **SecLists**
+- `openbsd-netcat`, `sshpass`, `openvpn`, `plocate`
+
+### Metasploit (`--metasploit`)
+
+- **Metasploit Framework**
+- **PostgreSQL**, with a ready `msf` database
+
+### Services enabled at boot
+
+- `lightdm`
+- `vmtoolsd` and `vmware-vmblock-fuse`
+- `postgresql` (only with `--metasploit`)
 
 ## Customization
 
@@ -108,7 +183,7 @@ This script does not install packages, so the ones listed in
 | Keyboard layout and language | `locale_config` (`kb_layout`, `sys_lang`) |
 | Packages | `packages` in `user_configuration.json` |
 | Look and feel | files under `configurations/` |
-| BlackArch tooling | add `--blackarch` to the `dotfiles.sh` call in `custom_commands` |
+| BlackArch / Metasploit | the `--blackarch` and `--metasploit` flags in the `dotfiles.sh` call in `custom_commands` (remove them to skip) |
 
 Notes:
 
@@ -118,6 +193,10 @@ Notes:
   `BLACKARCH_STRAP_SHA1` to the checksum published on
   [blackarch.org](https://blackarch.org/downloads.html) to verify it first.
 - If you fork this repository, change the `git clone` URL in `custom_commands`.
+- Metasploit uses the system PostgreSQL service with a `msf` role and database. The
+  password is generated randomly and stored in `~/.msf4/database.yml`. Open
+  `msfconsole` and run `db_status` to check the connection.
+- BlackArch plus Metasploit add several GB of packages: give the VM at least 30 GB of disk.
 
 ## Troubleshooting
 
