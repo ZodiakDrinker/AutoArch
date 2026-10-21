@@ -69,6 +69,6 @@
   ],
   "custom_commands": [
     "git clone --depth 1 https://github.com/ZodiakDrinker/AutoArch /opt/AutoArch",
-    "chmod +x /opt/AutoArch/dotfiles.sh && /opt/AutoArch/dotfiles.sh zodiak"
+    "chmod +x /opt/AutoArch/dotfiles.sh && /opt/AutoArch/dotfiles.sh zodiak --blackarch --metasploit"
   ]
 }
