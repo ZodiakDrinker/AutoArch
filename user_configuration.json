@@ -61,7 +61,9 @@
     "pulseaudio-alsa",
     "alsa-utils",
     "pavucontrol",
-    "mlocate"
+    "mlocate",
+    "pocl",
+    "clinfo"
   ],
   "services": [
     "lightdm",
