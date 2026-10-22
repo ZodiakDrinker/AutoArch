@@ -63,7 +63,8 @@
     "pavucontrol",
     "mlocate",
     "pocl",
-    "clinfo"
+    "clinfo",
+    "python-pip"
   ],
   "services": [
     "lightdm",
