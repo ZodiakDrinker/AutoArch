@@ -15,7 +15,7 @@
 #                         para verificar strap.sh antes de ejecutarlo.
 set -euo pipefail
 
-log()  { echo -e "\n[+] $*"; }
+log()  { echo -e "\n[+] $(date +%H:%M:%S) $*"; }
 ok()   { echo -e "[✔] $*"; }
 warn() { echo -e "[!] $*" >&2; }
 
@@ -23,6 +23,12 @@ if [ "$(id -u)" -ne 0 ]; then
   echo "error: ejecuta este script como root (sudo)." >&2
   exit 1
 fi
+
+# Toda la salida (pasos, pacman, NvChad, msfconsole...) se guarda también en un
+# log. archinstall no muestra la salida de custom_commands, pero se puede seguir
+# desde otra consola con:  tail -f /mnt/var/log/autoarch.log
+LOG_FILE=/var/log/autoarch.log
+exec > >(tee -a "$LOG_FILE") 2>&1
 
 USER_NAME=""
 BLACKARCH=0
@@ -149,6 +155,19 @@ else
 fi
 
 # ---------------------------------------------------------------- BlackArch -
+# Los mirrors de BlackArch caídos o filtrados pueden dejar a pacman colgado
+# durante horas (sin timeout de conexión). Mientras se instalan BlackArch y
+# Metasploit se usa curl como descargador: 5 s para conectar y aborta si baja
+# de 1 KB/s durante 30 s, pasando así al siguiente mirror.
+XFER_TAG="# autoarch-xfer"
+xfer_on() {
+  if grep -q "$XFER_TAG" /etc/pacman.conf; then
+    return 0
+  fi
+  sed -i "/^\[options\]/a XferCommand = /usr/bin/curl -fL -C - --connect-timeout 5 --speed-limit 1024 --speed-time 30 --retry 3 --retry-delay 2 -o %o %u $XFER_TAG" /etc/pacman.conf
+}
+xfer_off() { sed -i "/$XFER_TAG/d" /etc/pacman.conf; }
+
 install_blackarch() {
   local tmp
   tmp="$(mktemp -d)" || return 1
@@ -159,12 +178,34 @@ install_blackarch() {
     warn "BLACKARCH_STRAP_SHA1 no definido: strap.sh se ejecuta SIN verificar"
   fi
   chmod +x "$tmp/strap.sh"
-  "$tmp/strap.sh" || return 1
+  # strap.sh pregunta "Perform full system upgrade? [Yn]" leyendo de /dev/tty y
+  # después pacman -Su pide confirmación por stdin. Se ejecuta en un pty propio
+  # (script) y se le manda una "y" cada 3 s, así que todas las preguntas se
+  # contestan que sí. stty -echo evita que las "y" aparezcan en el log.
+  local strap_ok=0
+  if command -v script >/dev/null 2>&1; then
+    timeout 30m script -qefc "stty -echo 2>/dev/null; exec $tmp/strap.sh" /dev/null \
+      < <(sleep 2; while :; do echo y; sleep 3; done) && strap_ok=1
+  else
+    warn "script (util-linux) no disponible: strap.sh puede pedir confirmación y bloquearse"
+    timeout 30m "$tmp/strap.sh" </dev/null && strap_ok=1
+  fi
+  if [ "$strap_ok" -ne 1 ]; then
+    pkill -f "$tmp/strap.sh" || true
+    pkill -x pacman || true
+    rm -f /var/lib/pacman/db.lck
+    return 1
+  fi
   pacman -S --noconfirm --needed \
     jdk-openjdk burpsuite openbsd-netcat hashid hashcat seclists plocate \
     wfuzz gobuster netexec smbclient smbmap certipy nmap ghidra sshpass \
     openvpn || return 1
 }
+
+if [ "$BLACKARCH" -eq 1 ] || [ "$METASPLOIT" -eq 1 ]; then
+  xfer_on
+  trap xfer_off EXIT
+fi
 
 if [ "$BLACKARCH" -eq 1 ]; then
   log "Instalando repositorios BlackArch y herramientas"
