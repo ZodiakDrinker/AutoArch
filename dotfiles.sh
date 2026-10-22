@@ -211,7 +211,8 @@ install_blackarch() {
   pacman -S --noconfirm --needed \
     jdk-openjdk burpsuite openbsd-netcat hashid hashcat seclists plocate \
     wfuzz gobuster netexec smbclient smbmap certipy nmap ghidra sshpass \
-    openvpn || return 1
+    openvpn hydra john medusa crowbar patator \
+    proxychains-ng socat sshuttle 3proxy stunnel iodine chisel ligolo-ng || return 1
 }
 
 if [ "$BLACKARCH" -eq 1 ] || [ "$METASPLOIT" -eq 1 ]; then
