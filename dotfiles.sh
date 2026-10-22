@@ -159,14 +159,26 @@ fi
 # durante horas (sin timeout de conexión). Mientras se instalan BlackArch y
 # Metasploit se usa curl como descargador: 5 s para conectar y aborta si baja
 # de 1 KB/s durante 30 s, pasando así al siguiente mirror.
-XFER_TAG="# autoarch-xfer"
+# OJO: pacman NO entiende comentarios al final de línea; todo lo que haya tras
+# el comando se pasa como argumentos a curl. Por eso la línea va sin comentario
+# y se localiza después por su texto exacto.
+PACMAN_CONF="${PACMAN_CONF:-/etc/pacman.conf}"
+XFER_LINE='XferCommand = /usr/bin/curl -fL -C - --connect-timeout 5 --speed-limit 1024 --speed-time 30 --retry 3 --retry-delay 2 -o %o %u'
+
 xfer_on() {
-  if grep -q "$XFER_TAG" /etc/pacman.conf; then
+  if grep -qxF "$XFER_LINE" "$PACMAN_CONF"; then
     return 0
   fi
-  sed -i "/^\[options\]/a XferCommand = /usr/bin/curl -fL -C - --connect-timeout 5 --speed-limit 1024 --speed-time 30 --retry 3 --retry-delay 2 -o %o %u $XFER_TAG" /etc/pacman.conf
+  sed -i "/^\[options\]/a $XFER_LINE" "$PACMAN_CONF"
 }
-xfer_off() { sed -i "/$XFER_TAG/d" /etc/pacman.conf; }
+
+xfer_off() {
+  local tmpconf
+  tmpconf="$(mktemp)" || return 0
+  grep -vxF "$XFER_LINE" "$PACMAN_CONF" > "$tmpconf" || true
+  cat "$tmpconf" > "$PACMAN_CONF"
+  rm -f "$tmpconf"
+}
 
 install_blackarch() {
   local tmp
