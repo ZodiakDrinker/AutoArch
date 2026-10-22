@@ -156,11 +156,13 @@ Everything below is installed automatically, either by `archinstall` (the
 Installed after the BlackArch repositories are added:
 
 - **Burp Suite**
-- **Ghidra** and `jdk-openjdk`
 - **Nmap**
+- **Ghidra** and `jdk-openjdk` (graphical reverse engineering)
 - **Hashcat** and **hashid**
 - **Gobuster** and **wfuzz**
 - **NetExec**, **smbclient**, **smbmap** and **Certipy**
+- **Pivoting / tunneling**: `proxychains-ng`, `socat`, `sshuttle`, `3proxy`, `stunnel`, `iodine` (DNS tunneling), `chisel` and `ligolo-ng`
+- **Hydra**, **John the Ripper**, **Medusa**, **Crowbar** and **Patator**: brute-force / password-cracking tools
 - **SecLists**
 - `openbsd-netcat`, `sshpass`, `openvpn`, `plocate`
 
@@ -209,6 +211,15 @@ Notes:
   problem is most likely the greeter's keyboard layout.
 - **Session closes right after logging in**: check `~/.xsession-errors` and
   `journalctl -b` for errors in the bspwm configuration.
+- **Following the progress of `dotfiles.sh`**: `archinstall` does not show the
+  output of `custom_commands`. The script writes everything to
+  `/var/log/autoarch.log`, so from another console (`Ctrl + Alt + F2`, log in as
+  `root`) run `tail -f /mnt/var/log/autoarch.log`. Each step is timestamped. For the
+  package installs you can also follow `tail -f /mnt/var/log/pacman.log`.
+- **Stuck at `pacman -Syy` during BlackArch setup**: a dead or filtered BlackArch
+  mirror. `dotfiles.sh` makes pacman use `curl` with short timeouts while installing
+  BlackArch and Metasploit, so it skips bad mirrors. If it still fails, the step is
+  skipped with a warning and you can retry later with `sudo ./dotfiles.sh --blackarch`.
 - **The JSON is rejected**: the `archinstall` schema changes between versions.
   Run it with `--dry-run` first, or generate a reference config by doing one
   manual install and reusing the saved `user_configuration.json`.
