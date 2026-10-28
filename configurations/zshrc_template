@@ -71,3 +71,5 @@ function extractPorts(){
 	echo -e "[*] Ports copied to clipboard\n"  >> extractPorts.tmp
 	cat extractPorts.tmp; rm extractPorts.tmp
 }
+
+export LS_COLORS="${LS_COLORS}:ow=${${(s.:.)LS_COLORS}[(r)di=*]#di=}:tw=${${(s.:.)LS_COLORS}[(r)di=*]#di=}"
