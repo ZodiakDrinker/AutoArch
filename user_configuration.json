@@ -64,7 +64,8 @@
     "mlocate",
     "pocl",
     "clinfo",
-    "python-pip"
+    "python-pip",
+    "bind-tools"
   ],
   "services": [
     "lightdm",
