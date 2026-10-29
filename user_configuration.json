@@ -65,7 +65,9 @@
     "pocl",
     "clinfo",
     "python-pip",
-    "bind-tools"
+    "bind-tools",
+    "nodejs",
+    "npm"
   ],
   "services": [
     "lightdm",
