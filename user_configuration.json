@@ -67,7 +67,8 @@
     "python-pip",
     "bind-tools",
     "nodejs",
-    "npm"
+    "npm",
+    "htmlq"
   ],
   "services": [
     "lightdm",
